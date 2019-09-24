@@ -17,7 +17,7 @@ from copy import deepcopy
 from selenium.webdriver.common.keys import Keys
 import os, json
 import mozinfo
-
+#from run_first import
 
 def login_dxy(url):  # ,*choose):
 
@@ -91,11 +91,17 @@ def save2file(driver,drugname):
         os.mkdir(drugname)
     os.chdir(drugname)
     try:
-        to_clicks=driver.find_elements_by_class_name('bg fr')
+        time.sleep(2)
+        #to_clicks=driver.find_elements_by_class_name('bg fr')
+        to_clicks=driver.find_elements_by_xpath('//a[@class="bg fr"]')
+        print('len(to_clicks)',len(to_clicks))
     except:
         to_clicks=[]
     for to_click in to_clicks:
-        to_click.click()
+        time.sleep(0.5)
+        actions=ActionChains(driver)
+        actions.move_to_element(to_click).click().perform()
+        #to_click.click()
     dt=iter(driver.find_elements_by_tag_name('dt'))
     dd = iter(driver.find_elements_by_tag_name('dd'))
     for dt_ in dt:
