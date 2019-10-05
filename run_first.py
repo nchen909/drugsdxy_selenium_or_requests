@@ -73,8 +73,9 @@ def login_dxy(url,user_info):
     if html:
         print('aaaaaaaaaaaaaaaaaaaaaa')
         cookies = driver.get_cookies()
-        print(cookies)
+        print('cookies:',cookies)
         jsoncookies = json.dumps(cookies)			#转为json
+        print('jsoncookies:',jsoncookies)
         with open('cookies.txt','w') as f:
             f.write(jsoncookies)					#将内存数据写入磁盘
         driver.close()									#关闭并释放内存是个好习惯
