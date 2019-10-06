@@ -11,7 +11,8 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 #from  selenium_stu.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import  WebDriverWait
 import requests
-from lxml import etree
+#from lxml import etree
+import xml.etree.ElementTree as etree  ##python3.7的lxml没有etree了。。我刚更新
 from copy import deepcopy
 
 

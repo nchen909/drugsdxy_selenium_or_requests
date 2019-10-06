@@ -12,7 +12,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
 import requests
-from lxml import etree
+##python3.7的lxml没有etree了。。我刚更新
+import lxml.html
+etree = lxml.html.etree
 from copy import deepcopy
 from selenium.webdriver.common.keys import Keys
 import os, json

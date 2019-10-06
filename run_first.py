@@ -7,7 +7,10 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.support.wait import  WebDriverWait
 from drugsdxy import readin
 import requests
-from lxml import etree
+#from lxml import etree
+##python3.7的lxml没有etree了。。我刚更新
+import lxml.html
+etree = lxml.html.etree
 from copy import deepcopy
 # from selenium_stu import webdriver
 # import json,time
@@ -79,6 +82,7 @@ def login_dxy(url,user_info):
         with open('cookies.txt','w') as f:
             f.write(jsoncookies)					#将内存数据写入磁盘
         driver.close()									#关闭并释放内存是个好习惯
+        #OSError: [WinError 6] 句柄无效。 那你就把上面改成driver.quit()反正差不多
         return html
 
     else:

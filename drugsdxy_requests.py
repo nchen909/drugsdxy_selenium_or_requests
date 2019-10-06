@@ -1,7 +1,10 @@
 import time,timeit,re
 import requests
 import requests.cookies
-from lxml import etree
+#from lxml import etree
+##python3.7的lxml没有etree了。。我刚更新
+import lxml.html
+etree = lxml.html.etree
 import os, json
 import mozinfo
 import math,random
@@ -97,7 +100,11 @@ def save2file(req,url,drugname):
             print('_origScriptSessionId' in engine.text)
             #都啥年代了还用DWR框架，垃圾网页
             ScriptSessionID_DWR=re.findall('dwr.engine._origScriptSessionId = "([A-Z0-9]*?)";',engine.text)[0]
-            ScriptSessionID_DWR=hex(int(ScriptSessionID_DWR,16)+math.floor(random.random()*1000))[2:]
+            print(ScriptSessionID_DWR)
+            #ScriptSessionID_DWR=hex(int(ScriptSessionID_DWR,16)+math.floor(random.random()*1000))[2:]
+            ScriptSessionID_DWR=ScriptSessionID_DWR+str(random.randint(0,9))+str(random.randint(0,9))+str(random.randint(0,9))
+            print(ScriptSessionID_DWR)
+            #不对 算法是后面补3个数。。
             pattern=re.compile(r"[0-9]+")#如91610
             num=pattern.findall(url)[0]
             id=dt_.xpath('./span[@class="fl"]/@id')[0]
@@ -116,9 +123,14 @@ def save2file(req,url,drugname):
             batchId+=1
             word=req.post('http://drugs.dxy.cn/dwr/call/plaincall/DrugUtils.showDetail.dwr',data=post_Data)
             with open(path+'.txt','w') as f:
-                print(re.findall('<p>(.*?)<\/p>',word.text))
-                print('\n'.join([bytes(i.strip('</strong>').strip('<strong>').replace('\\u200B','').strip(),encoding='utf-8').decode('unicode_escape') for i in re.findall('<p>(.*?)<\/p>',word.text)]))
-                f.write('\n'.join([bytes(i.strip('</strong>').strip('<strong>').replace('\\u200B','').strip(),encoding='utf-8').decode('unicode_escape') for i in re.findall('<p>(.*?)<\/p>',word.text)]))
+                print(re.findall('"(.*?)"\)',word.text))
+                the_word='\n'.join([bytes(i.strip('</strong>').strip('<strong>').replace('\\u200B','').strip(),encoding='utf-8').decode('unicode_escape') for i in re.findall('"(.*?)"\)',word.text)])
+                #the_word = re.sub('</p>','\n',the_word)
+                the_word = re.sub('\\n\\n', '\n', the_word)
+                the_word = re.sub('<br/><br/>', '\n', the_word)
+                the_word = re.sub('<[^<>]{0,10}>', '', the_word)
+                print(the_word)
+                f.write(the_word)
             next(dd)
             next(dd)
     os.chdir('../')
