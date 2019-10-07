@@ -90,11 +90,11 @@ def save2file(req,url,drugname):
         print('path:',path)
         click_or_not=dt_.xpath('./a[@onclick]')
         if not click_or_not:
-            with open(path+'.txt','w') as f:
+            with open(path+'.txt','w',encoding='utf-8') as f:
                 xxxx=next(dd)
-
+                print(xxxx.xpath('.//text()'))
                 print('\n'.join([str(i).strip() for i in xxxx.xpath('.//text()') if str(i).strip()]))
-                f.write('\n'.join([str(i).strip() for i in xxxx.xpath('.//text()')]))
+                f.write('\n'.join([str(i).strip() for i in xxxx.xpath('.//text()') if str(i).strip()]))
         else:
             engine=req.get('http://drugs.dxy.cn/dwr/engine.js')
             print('_origScriptSessionId' in engine.text)
@@ -122,9 +122,9 @@ def save2file(req,url,drugname):
             }
             batchId+=1
             word=req.post('http://drugs.dxy.cn/dwr/call/plaincall/DrugUtils.showDetail.dwr',data=post_Data)
-            with open(path+'.txt','w') as f:
+            with open(path+'.txt','w',encoding='utf-8') as f:
                 print(re.findall('"(.*?)"\)',word.text))
-                the_word='\n'.join([bytes(i.strip('</strong>').strip('<strong>').replace('\\u200B','').strip(),encoding='utf-8').decode('unicode_escape') for i in re.findall('"(.*?)"\)',word.text)])
+                the_word='\n'.join([bytes(i.replace('\\u200B','').strip(),encoding='utf-8').decode('unicode_escape') for i in re.findall('"(.*?)"\)',word.text)])
                 #the_word = re.sub('</p>','\n',the_word)
                 the_word = re.sub('\\n\\n', '\n', the_word)
                 the_word = re.sub('<br/><br/>', '\n', the_word)

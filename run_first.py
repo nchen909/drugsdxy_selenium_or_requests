@@ -44,7 +44,7 @@ def login_dxy(url,user_info):
         driver.find_element_by_name('password').send_keys(user_info[1])  # 输入你的密码
         time.sleep(1)
         driver.find_element_by_class_name('button').click()
-        time.sleep(10)  # 留出10s手动处理验证码
+        time.sleep(5)  # 留出10s手动处理验证码
         success=0#有没有登陆后跳转界面
         while(success<=1):
             try:
@@ -57,7 +57,7 @@ def login_dxy(url,user_info):
             else:
                 success+=1
                 driver.execute_script('alert("再给十秒搞定验证码,不然烧你网线")')
-                time.sleep(10)
+                time.sleep(5)
         if(success==2):
             print("登录失败")
             exit()
